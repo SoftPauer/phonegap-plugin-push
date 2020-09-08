@@ -156,6 +156,25 @@
         [self successWithMessage:command.callbackId withMsg:@"There is no topic to unsubscribe"];
     }
 }
+- (void)getToken:(CDVInvokedUrlCommand*)command;
+{
+
+    NSLog(@"IN OBJ-C");
+    CDVPluginResult* pluginResult = nil;
+    NSString* hex = GetHex();
+    
+    NSLog(@"GETTING TOKEN");
+    if (hex) {
+        NSLog(@"FOUND HEX %@", hex);
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:hex];
+    } else {
+        NSLog(@"NO HEX");
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+    }
+
+    NSLog(@"RETURNING TOKEN -> ", pluginResult);
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
 
 - (void)init:(CDVInvokedUrlCommand*)command;
 {

@@ -13,6 +13,13 @@
 static char launchNotificationKey;
 static char coldstartKey;
 NSString *const pushPluginApplicationDidBecomeActiveNotification = @"pushPluginApplicationDidBecomeActiveNotification";
+NSMutableString *hex;
+
+
+
+NSString* GetHex() {
+    return hex;
+}
 
 
 @implementation AppDelegate (notification)
@@ -69,6 +76,13 @@ NSString *const pushPluginApplicationDidBecomeActiveNotification = @"pushPluginA
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    
+    hex = [NSMutableString stringWithCapacity:([deviceToken length]*2)];
+    for (int i=0; i < [deviceToken length]; i++) {
+         [hex appendFormat:@"%02x", ((unsigned char *)[deviceToken bytes])[i]];
+    }
+     
+    NSLog(@"Device Token: %@", hex);
     PushPlugin *pushHandler = [self getCommandInstance:@"PushNotification"];
     [pushHandler didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
 }
